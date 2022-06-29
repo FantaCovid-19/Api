@@ -6,13 +6,22 @@ import helmet from 'helmet'
 import pkg from '../package.json'
 import './config'
 
-import userRoutes from './routes/user.routes'
+import { createRoles, createAdmin } from './libs/initialSetup'
 
+// Routes Imports
+import userRoutes from './routes/user.routes'
+import authRoutes from './routes/auth.routes'
+import scheduleRoutes from './routes/schedule.routes'
+
+// Init App Express
 const app = express()
+createRoles()
+createAdmin()
 
 // Settings
 app.set('pkg', pkg)
 app.set('port', process.env.PORT || 4000)
+app.set("json spaces", 4)
 
 // Middlewares
 const corsOptions = {
@@ -38,5 +47,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/user', userRoutes)
+app.use('/auth', authRoutes)
+app.use('/api/schedules', scheduleRoutes)
 
 export default app
