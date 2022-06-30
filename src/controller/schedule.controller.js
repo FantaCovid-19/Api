@@ -7,7 +7,6 @@ export const getSchedule = async (req, res) => {
 
 export const getScheduleById = async (req, res) => {
   const { scheduleId } = req.params
-
   const data = await Schedule.findById(scheduleId)
 
   return res.status(200).json(data)
