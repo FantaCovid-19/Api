@@ -15,6 +15,7 @@ import scheduleRoutes from './routes/schedule.routes'
 import companyRoutes from './routes/company.routes'
 import driverRoutes from './routes/driver.routes'
 import busRoutes from './routes/bus.routes'
+import routeRoutes from './routes/route.routes'
 
 // Init App Express
 const app = express()
@@ -55,5 +56,6 @@ app.use('/api/schedules', scheduleRoutes)
 app.use('/api/companies', companyRoutes)
 app.use('/api/drivers', driverRoutes)
 app.use('/api/bussed', busRoutes)
+app.use('/api/routes', routeRoutes)
 
 export default app
