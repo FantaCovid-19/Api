@@ -3,6 +3,7 @@ import Company from '../models/Company'
 
 export const getCompany = async (req, res) => {
   const data = await Company.find()
+
   return res.status(200).json(data)
 }
 
@@ -41,11 +42,11 @@ export const createCompany = async (req, res) => {
 }
 
 export const updateCompany = async (req, res) => {
-  const { account } = req.body
   const { companyId } = req.params
+  const { account } = req.body
 
   if (req.body.account) {
-    const foundUser = await User.find({ username: { $in: account }})
+    const foundUser = await User.find({ username: { $in: account } })
 
     req.body.account = foundUser.map((usr) => usr._id)
   }

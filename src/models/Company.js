@@ -8,7 +8,6 @@ const companySchema = new Schema (
     rut: {
       type: String,
       unique: true,
-      min: 9,
       max: 10
     },
     email: {
