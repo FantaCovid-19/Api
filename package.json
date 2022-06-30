@@ -1,10 +1,14 @@
 {
-  "name": "apimongo",
-  "author": "!FantaCovid-19",
+  "name": "station-rest-api",
+  "author": "!FantaCovid-19 <contact@mrfantasma.com> (mrfantasma.com)",
   "description": "",
   "version": "1.0.0",
   "license": "ISC",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FantaCovid-19/Api.git"
+  },
   "scripts": {
     "start": "node build/index.js",
     "build": "babel src --out-dir build",
