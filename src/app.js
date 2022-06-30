@@ -12,6 +12,7 @@ import { createRoles, createAdmin } from './libs/initialSetup'
 import userRoutes from './routes/user.routes'
 import authRoutes from './routes/auth.routes'
 import scheduleRoutes from './routes/schedule.routes'
+import companyRoutes from './routes/company.routes'
 
 // Init App Express
 const app = express()
@@ -49,5 +50,6 @@ app.get('/', (req, res) => {
 app.use('/user', userRoutes)
 app.use('/auth', authRoutes)
 app.use('/api/schedules', scheduleRoutes)
+app.use('/api/companies', companyRoutes)
 
 export default app
