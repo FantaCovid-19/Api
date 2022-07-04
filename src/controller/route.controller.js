@@ -1,5 +1,6 @@
 import Route from '../models/Route'
 import Company from '../models/Company'
+import Bus from '../models/Bus'
 
 export const getRoute = async (req, res) => {
   const data = await Route.find()
@@ -15,7 +16,7 @@ export const getRouteById = async (req, res) => {
 }
 
 export const createRoute = async (req, res) => {
-  const { origin, destination, stops, company } = req.body
+  const { origin, destination, stops, bus, company } = req.body
 
   try {
     const newRoute = new Route({
@@ -30,6 +31,12 @@ export const createRoute = async (req, res) => {
       newRoute.company = foundCompany.map((cmy) => cmy._id)
     }
 
+    if (req.body.bus) {
+      const foundBus = await Bus.find({ plate: { $in: bus }})
+
+      newRoute.bus = foundBus.map((bus) => bus._id)
+    }
+
     const savedRoute = await newRoute.save()
 
     return res.status(201).json(savedRoute)
@@ -41,12 +48,18 @@ export const createRoute = async (req, res) => {
 
 export const updateRoute = async (req, res) => {
   const { routeId } = req.params
-  const { company } = req.body
+  const { company, bus } = req.body
 
   if (req.body.company) {
     const foundCompany = await Company.find({ rut: { $in: company } })
 
     req.body.company = foundCompany.map((cmy) => cmy._id)
+  }
+
+  if (req.body.company) {
+    const foundBus = await Bus.find({ plate: { $in: bus } })
+
+    req.body.bus = foundBus.map((bus) => bus._id)
   }
 
   const data = await Route.findByIdAndUpdate(routeId, req.body, { new: true })

@@ -13,6 +13,10 @@ const routeSchema = new Schema(
         type: String
       }
     ],
+    bus: {
+      type: Schema.Types.ObjectId,
+      ref: 'Bus'
+    },
     company: {
       type: Schema.Types.ObjectId,
       ref: 'Company'
