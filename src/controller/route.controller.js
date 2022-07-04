@@ -10,7 +10,9 @@ export const getAllRoute = async (req, res) => {
 
 export const getAllSpecificDetails = async (req, res) => {
   const data = await Route.find()
-  data.company = await Company.find({ _id: data.company })
+  const foundCompany = await Company.find({ _id: data.company })
+
+  data.company = foundCompany
 
   return res.status(200).json(data)
 }
