@@ -2,8 +2,15 @@ import Route from '../models/Route'
 import Company from '../models/Company'
 import Bus from '../models/Bus'
 
-export const getRoute = async (req, res) => {
+export const getAllRoute = async (req, res) => {
   const data = await Route.find()
+
+  return res.status(200).json(data)
+}
+
+export const getAllSpecificDetails = async (req, res) => {
+  const data = await Route.find()
+  data.company = await Company.find({ _id: data.company })
 
   return res.status(200).json(data)
 }
