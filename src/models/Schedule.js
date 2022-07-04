@@ -14,6 +14,14 @@ const scheduleSchema = new Schema(
     platform: {
       type: String
     },
+    routes: {
+      type: Schema.Types.ObjectId,
+      ref: 'Route'
+    },
+    company: {
+      type: Schema.Types.ObjectId,
+      ref: 'Company'
+    },
     cost: {
       type: Number
     }

@@ -1,4 +1,6 @@
 import Schedule from '../models/Schedule'
+import Route from '../models/Route'
+import Company from '../models/Company'
 
 export const getSchedule = async (req, res) => {
   const data = await Schedule.find()
@@ -13,7 +15,7 @@ export const getScheduleById = async (req, res) => {
 }
 
 export const createSchedule = async (req, res) => {
-  const { check_in, check_out, date, platform, cost } = req.body
+  const { check_in, check_out, date, platform, routes, company, cost } = req.body
 
   try {
     const newSchedule = new Schedule({
@@ -23,6 +25,18 @@ export const createSchedule = async (req, res) => {
       platform,
       cost
     })
+
+    if (req.body.routes) {
+      const foundRoutes = await Route.find({ _id: { $in: routes } })
+
+      newSchedule.routes = foundRoutes.map((rt) => rt._id)
+    }
+
+    if (req.body.company) {
+      const foundCompany = await Company.find({ rut: { $in: company }})
+
+      newSchedule.company = foundCompany.map((cmy) => cmy._id)
+    }
 
     const dataSaved = await newSchedule.save()
 
@@ -34,7 +48,22 @@ export const createSchedule = async (req, res) => {
 }
 
 export const updateSchedule = async (req, res) => {
-  const dataUpdated = await Schedule.findByIdAndUpdate(req.params.scheduleId, req.body, { new: true })
+  const { scheduleId } = req.params
+  const { routes, company } = req.body
+
+  if (req.body.routes) {
+    const foundRoutes = await Route.find({ _id: { $in: routes } })
+
+    req.body.routes = foundRoutes.map((rt) => rt._id)
+  }
+
+  if (req.body.company) {
+    const foundCompany = await Company.find({ rut: { $in: company }})
+
+    req.body.company = foundCompany.map((cmy) => cmy._id)
+  }
+
+  const dataUpdated = await Schedule.findByIdAndUpdate(scheduleId, req.body, { new: true })
 
   return res.status(204).json(dataUpdated)
 }
