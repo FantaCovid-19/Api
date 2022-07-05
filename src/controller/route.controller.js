@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import Route from '../models/Route'
 import Company from '../models/Company'
 import Bus from '../models/Bus'
@@ -9,10 +10,24 @@ export const getAllRoute = async (req, res) => {
 }
 
 export const getAllSpecificDetails = async (req, res) => {
-  const data = await Route.find()
-  const foundCompany = await Company.find({ _id: data.company })
-
-  data.company = foundCompany
+  const data = await Route.aggregate([
+    {
+      $lookup: {
+        from: 'companies',
+        localField: 'Company',
+        foreignField: 'company',
+        as: 'company'
+      }
+    },
+    {
+      $lookup: {
+        from: 'buses',
+        localField: 'Bus',
+        foreignField: 'bus',
+        as: 'bus'
+      }
+    }
+  ])
 
   return res.status(200).json(data)
 }
