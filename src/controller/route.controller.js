@@ -39,6 +39,58 @@ export const getRouteById = async (req, res) => {
   return res.status(200).json(data)
 }
 
+export const getRouteByIdDetails = async (req, res) => {
+  const { routeId } = req.params
+  const data = await Route.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(routeId)
+      }
+    },
+    {
+      $lookup: {
+        from: 'companies',
+        localField: 'Company',
+        foreignField: 'company',
+        as: 'company'
+      }
+    },
+    {
+      $lookup: {
+        from: 'buses',
+        localField: 'Bus',
+        foreignField: 'bus',
+        as: 'bus'
+      }
+    },
+  ])
+
+  const body = {
+    _id: data[0]._id,
+    origin: data[0].origin,
+    destination: data[0].destination,
+    stops: data[0].stops,
+    company: {
+      _id: data[0].company[0]._id,
+      name: data[0].company[0].name,
+      email: data[0].company[0].email,
+      phone: data[0].company[0].phone,
+      address: data[0].company[0].address
+    },
+    bus: {
+      _id: data[0].bus[0]._id,
+      plate: data[0].bus[0].plate,
+      label: data[0].bus[0].label,
+      passenger: data[0].bus[0].passenger,
+      servicetech: data[0].bus[0].passenger,
+      conveniences: data[0].bus[0].conveniences,
+      drivers: data[0].bus[0].drivers,
+    }
+  }
+
+  return res.status(200).json(body)
+}
+
 export const createRoute = async (req, res) => {
   const { origin, destination, stops, bus, company } = req.body
 
