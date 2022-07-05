@@ -21,7 +21,7 @@ export const getScheduleById = async (req, res) => {
 
 export const getScheduleByIdAllDetails = async (req, res) => {
   const { scheduleId } = req.params
-  const data = await Schedule.findById(scheduleId)
+  const data = await Schedule.findById(scheduleId).populate('company').populate('routes')
 
   return res.status(200).json(data)
 }
