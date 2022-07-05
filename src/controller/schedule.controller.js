@@ -2,12 +2,24 @@ import Schedule from '../models/Schedule'
 import Route from '../models/Route'
 import Company from '../models/Company'
 
-export const getSchedule = async (req, res) => {
+export const getAllSchedule = async (req, res) => {
   const data = await Schedule.find()
   return res.status(200).json(data)
 }
 
+export const getAllSpecificDetailsSchedule = async (req, res) => {
+  const data = await Schedule.find().populate('company').populate('routes')
+  return res.status(200).json(data)
+}
+
 export const getScheduleById = async (req, res) => {
+  const { scheduleId } = req.params
+  const data = await Schedule.findById(scheduleId)
+
+  return res.status(200).json(data)
+}
+
+export const getScheduleByIdAllDetails = async (req, res) => {
   const { scheduleId } = req.params
   const data = await Schedule.findById(scheduleId)
 

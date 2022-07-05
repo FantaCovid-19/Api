@@ -30,4 +30,5 @@ const scheduleSchema = new Schema(
     versionKey: false
   }
 )
-export default model('Schedule', scheduleSchema)
+
+export default model('Schedule', scheduleSchema, 'schedules')
